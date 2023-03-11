@@ -12,12 +12,15 @@ The script `gettokenfordashboard.sh`will retrieve the token to be used for login
 
 ## Requirements
 
-Docker installed locally 
-  -  Ref: https://docs.docker.com/engine/install/ubuntu/
-     Ref: https://docs.docker.com/engine/security/rootless/
-kind 
-  - macos: `brew install kind`
-  - Ubuntu: 
-    `curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64
-    chmod +x ./kind
-    sudo mv ./kind /usr/local/bin/kind`
+Docker installed locally
+
+- Ref:  [https://docs.docker.com/engine/install/ubuntu/](https://docs.docker.com/engine/install/ubuntu/)
+- Ref:  [https://docs.docker.com/engine/security/rootless/](https://docs.docker.com/engine/security/rootless/)
+
+kind
+-   macos:  `brew install kind`
+-   Ubuntu:
+
+>      curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64
+>      chmod +x ./kind
+>      sudo mv ./kind /usr/local/bin/kind
