@@ -28,3 +28,18 @@ kind
 ### install metallb for loadbalancing
 - Ref [https://kind.sigs.k8s.io/docs/user/loadbalancer/](https://kind.sigs.k8s.io/docs/user/loadbalancer/)
 
+### How to push local docker image to kind registry
+Tag the image to use the local registry 
+```
+docker tag hello-python:0.0.1 localhost:5001/hello-python:0.0.1
+```
+Then docker push 
+```
+docker push localhost:5001/hello-python:0.0.1
+```
+
+Verify:
+```
+curl http://127.0.0.1:5001/v2/_catalog  
+curl http://127.0.0.1:5001/v2/hello-python/tags/list
+ ```

@@ -14,7 +14,7 @@ fi
 cat <<EOF | kind create cluster --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
-name: $clustername-dev
+name: $clustername
 networking:
   ipFamily: dual
 nodes:
@@ -52,3 +52,6 @@ data:
 EOF
 kind get clusters
 kubectl cluster-info --context $clustername
+
+# set kind kubeconfig
+export KUBECONFIG="$( kind get kubeconfig --name $clustername)"
