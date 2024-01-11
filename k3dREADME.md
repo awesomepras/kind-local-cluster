@@ -13,10 +13,13 @@ _https://k3d.io/v5.6.0/#install-specific-release_
 
 ### Create:
 `k3d cluster create mycluster`
+or
+` kind cluster create mycluster --no-deploy-traefik ` # to prevent install Traefik as default ingress Class
+
 
 ### Check:
 `kubectl get nodes`
-
+make sure you don't have a Traefik controller installed, run `kubectl get deployments -n kube-system`  to see if Traefik is gone.
 ## Using Image Registries:
 
 Create a dedicated registry together with your cluster: 
