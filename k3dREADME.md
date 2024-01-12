@@ -14,7 +14,9 @@ _https://k3d.io/v5.6.0/#install-specific-release_
 ### Create:
 `k3d cluster create mycluster`
 or
-` kind cluster create mycluster --no-deploy-traefik ` # to prevent install Traefik as default ingress Class
+`  k3d cluster create dev-cluster   --k3s-arg "--disable=traefik@server:0" ` # to prevent install Traefik as default ingress Class
+[Ref](https://github.com/k3d-io/k3d-demo/blob/main/assets/k3d-config.yaml)
+
 
 
 ### Check:
