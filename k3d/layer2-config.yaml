@@ -1,0 +1,21 @@
+# https://metallb.universe.tf/configuration/#layer-2-configuration
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: static-pool
+  namespace: metallb-system
+spec:
+  addresses:
+#  - 172.19.255.200-172.19.255.250
+# MATCH ADDRESS RANGE TO LOCAL LAN NETWORK
+  - 192.168.2.100/32
+  autoAssign: true
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: l2advertisement
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - static-pool

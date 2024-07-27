@@ -4,7 +4,7 @@ set -o errexit
 #kubectl cluster-info --context kind-java-sampleapp-dev
 helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard
 helm install dashboard kubernetes-dashboard/kubernetes-dashboard -n kubernetes-dashboard --create-namespace
-cat <<EOF | kubectl apply -f -
+cat <<EOF | kubectl replace -f -
 apiVersion: v1
 kind: ServiceAccount
 metadata:
