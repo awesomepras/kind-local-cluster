@@ -29,6 +29,15 @@ or if you have golang installed,
 >      go install sigs.k8s.io/kind@v0.23.0
 
 Then kind create cluster
+
+#### To create multi-node cluster 
+Use the kind-config.yaml
+> kind create cluster -n tenant1 --config kind-config.yaml
+set context
+> kubectl config set-context tenant1
+> kubectl get nodes
+
+
 ### install metallb for loadbalancing
 - Ref [https://kind.sigs.k8s.io/docs/user/loadbalancer/](https://kind.sigs.k8s.io/docs/user/loadbalancer/)
 
