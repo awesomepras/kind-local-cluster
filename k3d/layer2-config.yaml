@@ -8,7 +8,7 @@ spec:
   addresses:
 #  - 172.19.255.200-172.19.255.250
 # MATCH ADDRESS RANGE TO LOCAL LAN NETWORK
-  - 192.168.2.100/32
+  - 192.168.2.151-192.168.2.200
   autoAssign: true
 ---
 apiVersion: metallb.io/v1beta1

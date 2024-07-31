@@ -2,7 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nginx
-  annotations:
+  labels:
+    app: nginx
 spec:
   ports:
   - port: 80
@@ -10,11 +11,14 @@ spec:
   selector:
     app: nginx
   type: LoadBalancer
+  externalTrafficPolicy: Local
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
+  labels:
+    app: nginx
 spec:
   selector:
     matchLabels:
