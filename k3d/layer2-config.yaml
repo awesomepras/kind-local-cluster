@@ -6,9 +6,8 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-#  - 172.19.255.200-172.19.255.250
 # MATCH ADDRESS RANGE TO LOCAL LAN NETWORK
-  - 192.168.2.151-192.168.2.200
+  - 192.168.3.240-192.168.3.254
   autoAssign: true
 ---
 apiVersion: metallb.io/v1beta1
