@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-http
+  namespace: default  # Change this to the appropriate namespace if needed
+spec:
+  podSelector:
+    matchLabels:
+      app: demo
+  policyTypes:
+  - Ingress
+  ingress:
+  - ports:
+    - protocol: TCP
+      port: 80
+    from:
+    - podSelector: {}  # Allow traffic from all pods in the same namespace
+

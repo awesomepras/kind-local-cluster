@@ -1,10 +1,18 @@
 # Intro
-Alternative to kind, k3d can be used to deploy a k8s cluster
+Alternative to kind, k3d can be used to deploy a k8s cluster. 
 
 *Description:*
 k3d makes it very easy to create single- and multi-node k3s clusters in docker, e.g. for local development on k8s
 
+This repository contains scripts that can be used to automate the setup of kubernetes cluster using k3d
+```
+├── 1-install-k3dcluster.sh
+├── 2-install-metallb.sh
+├── 3-install-ingress-nginx.sh
+```
+Note for the `1-install-k3dcluster.sh` script, a docker network is created based on the clustername defined.  
 
+* Post installation of cluster, there is rule to enables IP masquerading for the specified subnet (192.168.3.0/24). This rule allows packets originating from the 192.168.3.0/24 subnet to be forwarded to other networks while masquerading their source IP address.  
 ##  How to
 _https://k3d.io/v5.6.0/#install-specific-release_
 
@@ -39,6 +47,27 @@ This creates your cluster mycluster together with a registry container called my
 
 ## Multi-server Clusters
 ` k3d cluster create multinode --agents 2 --servers 2`
+
+# MetalLb
+When you install MetalLB in a Kubernetes cluster, it primarily affects how services of type LoadBalancer are exposed to the outside world. MetalLB provides a way to allocate external IP addresses to these services, allowing them to be accessed from outside the cluster.
+
+[Ref:](https://github.com/kubernetes/ingress-nginx/blob/main/docs/deploy/baremetal.md)
+
+### Install MetalLB in Layer 2 Mode:
+Create the IP pool 192.168.2.151-192.168.2.200 , make sure to adjust the IP address pool range to match your network.   
+
+### Configure Ingress Controller with type LoadBalancer
+``` ├── 3-install-ingress-nginx.sh```
+
+
+*_https://github.com/kubernetes/ingress-nginx/blob/main/docs/deploy/index.md#quick-start
+
+[img](https://github.com/kubernetes/ingress-nginx/blob/main/docs/images/baremetal/metallb.jpg)
+
+It may take a few minutes for the load balancer IP to be available.  
+You can watch the status by running 'kubectl get service --namespace ingress-nginx ingress-nginx-controller'
+
+### Cant reach nginx page after all of the above setup - to be worked on 
 
 #### Whats next:
 https://istio.io/latest/docs/setup/platform-setup/k3d/

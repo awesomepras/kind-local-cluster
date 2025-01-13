@@ -1,2 +1,7 @@
 #!/bin/sh
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/baremetal/deploy.yaml
+helm upgrade --install ingress-nginx ingress-nginx \
+--repo https://kubernetes.github.io/ingress-nginx \
+--namespace ingress-nginx --create-namespace
+echo "----install done--"
+kubectl -n ingress-nginx get svc
+kubectl get ingressClass
