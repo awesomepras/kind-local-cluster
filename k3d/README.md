@@ -26,11 +26,11 @@ _https://k3d.io/v5.6.0/#install-specific-release_
 `k3d cluster create mycluster`  
 or  
 `k3d cluster create dev-cluster   --k3s-arg "--disable=traefik@server:0" ` # (disables  Traefik as default ingress)
-[Ref](https://github.com/k3d-io/k3d-demo/blob/main/assets/k3d-config.yaml)
+_https://github.com/k3d-io/k3d-demo/blob/main/assets/k3d-config.yaml_
 
 The `1-install-k3dcluster.sh` script will create a docker network bridge to be used for the k3d cluster. 
 
-[!img](k3d.svg)
+![setup](k3d.svg)
 
 ### Check:
 `kubectl get nodes`  
@@ -41,10 +41,10 @@ make sure you don't have a Traefik controller installed, run `kubectl get deploy
 Create a dedicated registry together with your cluster: 
 You can add registries by specifying them in a registries.yaml and referencing it at creation time: 
 
-`k3d cluster create mycluster --registry-config "/home/YOU/my-registries.yaml"`
+`k3d cluster create mycluster --registry-config "/home/YOU/my-registries.yaml"`  
 or 
-`k3d cluster create mycluster --registry-create mycluster-registry`
-This creates your cluster mycluster together with a registry container called mycluster-registry
+`k3d cluster create mycluster --registry-create mycluster-registry`  
+This creates your cluster mycluster together with a registry container called mycluster-registry  
 
 * k3d sets everything up in the cluster for containerd to be able to pull images from that registry (using the registries.yaml file)
 * the port, which the registry is listening on will be mapped to a random port on your host system
@@ -57,7 +57,7 @@ This creates your cluster mycluster together with a registry container called my
 # MetalLb
 When you install MetalLB in a Kubernetes cluster, it primarily affects how services of type LoadBalancer are exposed to the outside world. MetalLB provides a way to allocate external IP addresses to these services, allowing them to be accessed from outside the cluster.
 
-[Ref:](https://github.com/kubernetes/ingress-nginx/blob/main/docs/deploy/baremetal.md)
+_https://github.com/kubernetes/ingress-nginx/blob/main/docs/deploy/baremetal.md):](https://github.com/kubernetes/ingress-nginx/blob/main/docs/deploy/baremetal.md_
 
 ### Install MetalLB in Layer 2 Mode:
 Make sure to assign an IP address pool that is within the docker network.  
@@ -66,12 +66,12 @@ Make sure to assign an IP address pool that is within the docker network.
 ### Configure Ingress Controller with type LoadBalancer
 ``` ├── 3-install-ingress-nginx.sh```
 
-*_https://github.com/kubernetes/ingress-nginx/blob/main/docs/deploy/index.md#quick-start
+_https://github.com/kubernetes/ingress-nginx/blob/main/docs/deploy/index.md#quick-start_
 
 ![metallb](https://github.com/kubernetes/ingress-nginx/blob/main/docs/images/baremetal/metallb.jpg)
 
 It may take a few minutes for the load balancer IP to be available.  
-You can watch the status by running 'kubectl get service --namespace ingress-nginx ingress-nginx-controller'  
+You can watch the status by running `kubectl get service --namespace ingress-nginx ingress-nginx-controller`  
 
 ### Deploy ingress , followed by application pod and service
 ```
@@ -85,5 +85,5 @@ Optionally there is a netpolicy configuration that is set to allow traffic to po
 
 
 ####  To Do: 
-https://istio.io/latest/docs/setup/platform-setup/k3d/
+_https://istio.io/latest/docs/setup/platform-setup/k3d/_
 
