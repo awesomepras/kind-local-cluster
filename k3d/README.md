@@ -64,7 +64,7 @@ Make sure to assign an IP address pool that is within the docker network.
 
 
 ### Configure Ingress Controller with type LoadBalancer
-``` ├── 3-install-ingress-nginx.sh```
+```├── 3-install-ingress-nginx.sh```
 
 _https://github.com/kubernetes/ingress-nginx/blob/main/docs/deploy/index.md#quick-start_
 
@@ -73,7 +73,7 @@ _https://github.com/kubernetes/ingress-nginx/blob/main/docs/deploy/index.md#quic
 It may take a few minutes for the load balancer IP to be available.  
 You can watch the status by running `kubectl get service --namespace ingress-nginx ingress-nginx-controller`  
 
-### Deploy ingress , followed by application pod and service
+### Deploy ingress , followed by application pod and service  
 ```
 ├── 3-install-ingress-nginx.sh  
 ├── 4-deploy-nginx-webserver.yaml  
@@ -82,7 +82,30 @@ You can watch the status by running `kubectl get service --namespace ingress-ngi
 These scripts will setup the ingress to route traffic to kubernetes service for app nginx webserver.  
 
 Optionally there is a netpolicy configuration that is set to allow traffic to port 80 to the pods  
+### Some networking configuration 
+* Bridge Between LAN and K3d Docker Network: 
+  - Since k3d cluster is running in the Docker network 192.168.3.0/24, you must ensure routing is in place so that LAN traffic (from 192.168.2.0/24) can reach the MetalLB-assigned IPs. 
+  - NAT and Host IP forwarding
+  sudo iptables -t nat -A POSTROUTING -s 192.168.3.0/24 ! -d 192.168.3.0/24 -j MASQUERADE
 
+. Enable IP Forwarding on the master host where K8s Cluster is running
+>  Check if IP forwarding is enabled
+```cat /proc/sys/net/ipv4/ip_forward```
+
+> If not enabled, enable it temporarily
+``` sudo sysctl -w net.ipv4.ip_forward=1 ```
+
+> To make it persistent, update sysctl.conf
+```
+echo "net.ipv4.ip_forward = 1" | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+```
+
+Add route to Docker network on client network
+```sudo ip route add 192.168.3.0/24 via 192.168.2.100```
+
+Run tcpdump on master host running docker network
+```sudo tcpdump -i any host 192.168.3.241```
 
 ####  To Do: 
 _https://istio.io/latest/docs/setup/platform-setup/k3d/_
