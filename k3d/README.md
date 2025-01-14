@@ -9,6 +9,9 @@ This repository contains scripts that can be used to automate the setup of kuber
 ├── 1-install-k3dcluster.sh
 ├── 2-install-metallb.sh
 ├── 3-install-ingress-nginx.sh
+├── 4-deploy-nginx-webserver.yaml
+├── 5-deploy-ingressfornginx.yaml
+├── cleanup-k3d.sh
 ```
 Note for the `1-install-k3dcluster.sh` script, a docker network is created based on the clustername defined.  
 
@@ -19,17 +22,20 @@ _https://k3d.io/v5.6.0/#install-specific-release_
 ### Install:
 `wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash`
 
-### Create:
-`k3d cluster create mycluster`
-or
-`  k3d cluster create dev-cluster   --k3s-arg "--disable=traefik@server:0" ` # to prevent install Traefik as default ingress Class
+### Create cluster (Manual)
+`k3d cluster create mycluster`  
+or  
+`k3d cluster create dev-cluster   --k3s-arg "--disable=traefik@server:0" ` # (disables  Traefik as default ingress)
 [Ref](https://github.com/k3d-io/k3d-demo/blob/main/assets/k3d-config.yaml)
 
+The `1-install-k3dcluster.sh` script will create a docker network bridge to be used for the k3d cluster. 
 
+[!img](k3d.svg)
 
 ### Check:
-`kubectl get nodes`
-make sure you don't have a Traefik controller installed, run `kubectl get deployments -n kube-system`  to see if Traefik is gone.
+`kubectl get nodes`  
+make sure you don't have a Traefik controller installed, run `kubectl get deployments -n kube-system` , there should be no Traefik information
+
 ## Using Image Registries:
 
 Create a dedicated registry together with your cluster: 
@@ -54,21 +60,30 @@ When you install MetalLB in a Kubernetes cluster, it primarily affects how servi
 [Ref:](https://github.com/kubernetes/ingress-nginx/blob/main/docs/deploy/baremetal.md)
 
 ### Install MetalLB in Layer 2 Mode:
-Create the IP pool 192.168.2.151-192.168.2.200 , make sure to adjust the IP address pool range to match your network.   
+Make sure to assign an IP address pool that is within the docker network.  
+
 
 ### Configure Ingress Controller with type LoadBalancer
 ``` ├── 3-install-ingress-nginx.sh```
 
-
 *_https://github.com/kubernetes/ingress-nginx/blob/main/docs/deploy/index.md#quick-start
 
-[img](https://github.com/kubernetes/ingress-nginx/blob/main/docs/images/baremetal/metallb.jpg)
+![metallb](https://github.com/kubernetes/ingress-nginx/blob/main/docs/images/baremetal/metallb.jpg)
 
 It may take a few minutes for the load balancer IP to be available.  
-You can watch the status by running 'kubectl get service --namespace ingress-nginx ingress-nginx-controller'
+You can watch the status by running 'kubectl get service --namespace ingress-nginx ingress-nginx-controller'  
 
-### Cant reach nginx page after all of the above setup - to be worked on 
+### Deploy ingress , followed by application pod and service
+```
+├── 3-install-ingress-nginx.sh  
+├── 4-deploy-nginx-webserver.yaml  
+├── 5-deploy-ingressfornginx.yaml  
+```
+These scripts will setup the ingress to route traffic to kubernetes service for app nginx webserver.  
 
-#### Whats next:
+Optionally there is a netpolicy configuration that is set to allow traffic to port 80 to the pods  
+
+
+####  To Do: 
 https://istio.io/latest/docs/setup/platform-setup/k3d/
 
